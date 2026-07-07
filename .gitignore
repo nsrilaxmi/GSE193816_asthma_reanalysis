@@ -1,6 +1,7 @@
 data/raw_geo/*.h5ad
 data/raw_geo/*.h5ad.gz
 data/processed/*.h5ad
+data/metadata/*.csv
 results/figures/*.png
 results/figures/*.pdf
 results/tables/*.csv
@@ -11,4 +12,3 @@ __pycache__/
 *.pyc
 .Rhistory
 .RData
-

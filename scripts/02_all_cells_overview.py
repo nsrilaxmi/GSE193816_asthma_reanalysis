@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import matplotlib
+matplotlib.use("Agg", force=True)
 import matplotlib.pyplot as plt
 import pandas as pd
 import scanpy as sc
@@ -86,4 +88,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

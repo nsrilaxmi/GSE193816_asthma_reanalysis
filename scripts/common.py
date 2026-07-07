@@ -71,13 +71,46 @@ def derive_design_columns(obs: pd.DataFrame, sample_col: str) -> pd.DataFrame:
     sample = out[sample_col].astype(str)
 
     if "subject" not in out.columns:
-        out["subject"] = sample.str.extract(r"(^\d+)")
-    if "group" not in out.columns:
-        out["group"] = sample.str.extract(r"_(AA|ANA)_")
-    if "condition" not in out.columns:
-        out["condition"] = sample.str.extract(r"_(Ag|Dil|Pre)$")
+        if "id" in out.columns:
+            out["subject"] = out["id"].astype(str)
+        else:
+            out["subject"] = sample.str.extract(r"(^\d+)")
+    else:
+        out["subject"] = out["subject"].astype(str)
+        missing_subject = out["subject"].isna() | out["subject"].isin(["nan", "None", ""])
+        out.loc[missing_subject, "subject"] = sample.loc[missing_subject].str.extract(r"(^\d+)")[0]
 
-    out["group"] = out["group"].replace({"AA": "AA", "ANA": "ANA"})
+    derived_group = sample.str.extract(r"_(AA|ANA|AC)_")[0]
+    if "group" not in out.columns:
+        out["group"] = derived_group
+    else:
+        out["group"] = out["group"].astype(str)
+        missing_group = out["group"].isna() | out["group"].isin(["nan", "None", ""])
+        out.loc[missing_group, "group"] = derived_group.loc[missing_group]
+    out["group"] = out["group"].replace({"AC": "ANA", "Allergic Control": "ANA", "control": "ANA"})
+
+    derived_condition = sample.str.extract(r"_(Ag|Dil|Pre|Bln)(?:$|-)")[0]
+    if "condition" not in out.columns:
+        out["condition"] = derived_condition
+    else:
+        out["condition"] = out["condition"].astype(str)
+        missing_condition = out["condition"].isna() | out["condition"].isin(["nan", "None", ""])
+        out.loc[missing_condition, "condition"] = derived_condition.loc[missing_condition]
+    out["condition"] = out["condition"].replace(
+        {
+            "Bln": "Pre",
+            "Baseline": "Pre",
+            "baseline": "Pre",
+            "Pre-challenge": "Pre",
+            "Saline": "Dil",
+            "Diluent": "Dil",
+            "Allergen": "Ag",
+        }
+    )
+
+    if out["subject"].isna().any():
+        out["subject"] = sample.str.extract(r"(^\d+)")
+
     out["condition"] = pd.Categorical(out["condition"], categories=["Pre", "Dil", "Ag"], ordered=True)
     return out
 
@@ -111,4 +144,3 @@ def write_sample_metadata(obs: pd.DataFrame, sample_col: str) -> pd.DataFrame:
 def save_obs_var(adata, prefix: str) -> None:
     adata.obs.to_csv(DATA_METADATA / f"{prefix}_cell_metadata.csv")
     adata.var.to_csv(DATA_METADATA / f"{prefix}_gene_metadata.csv")
-

@@ -185,6 +185,30 @@ results/figures/
 
 Generated outputs are ignored by Git so the repository stays small. For a portfolio release, selected final figures can be copied into `docs/figures/` and explicitly committed.
 
+## Results Preview
+
+Selected outputs from a local run are included in `docs/` so the GitHub repository shows representative results without committing the large GEO objects or full generated result directory.
+
+### All-Cell Overview
+
+![All cells colored by group](docs/figures/all_cells_umap_group.png)
+
+![All cells colored by condition](docs/figures/all_cells_umap_condition.png)
+
+![Cell-type composition by sample](docs/figures/celltype_composition_stacked_bar.png)
+
+### Epithelial Signature Scores
+
+![Airway epithelial signature scores by condition](docs/figures/aec_signature_scores_by_condition.png)
+
+### Immune Signature Scores
+
+![T-cell signature scores by condition](docs/figures/tcell_signature_scores_by_condition.png)
+
+![MNP signature scores by condition](docs/figures/mnp_signature_scores_by_condition.png)
+
+Preview tables are available in `docs/tables/`, including sample metadata, sample-level cell counts, epithelial signature scores, pseudo-bulk metadata, and compact top-50 pseudo-bulk differential expression summaries.
+
 ## Analysis Modules
 
 - `01_download_and_metadata.py`: loads all-cell object, infers sample/group/condition fields, exports metadata.

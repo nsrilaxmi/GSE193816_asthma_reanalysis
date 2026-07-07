@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import matplotlib
+matplotlib.use("Agg", force=True)
 import matplotlib.pyplot as plt
 import scanpy as sc
 import seaborn as sns
@@ -94,4 +96,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
