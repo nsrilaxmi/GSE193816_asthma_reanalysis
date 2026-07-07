@@ -209,6 +209,8 @@ Selected outputs from a local run are included in `docs/` so the GitHub reposito
 
 Preview tables are available in `docs/tables/`, including sample metadata, sample-level cell counts, epithelial signature scores, pseudo-bulk metadata, and compact top-50 pseudo-bulk differential expression summaries.
 
+See [validation_against_original.md](docs/validation_against_original.md) for a short audit of which first-pass results are directionally consistent with the original study and which claims require deeper subtype-resolved analysis.
+
 ## Analysis Modules
 
 - `01_download_and_metadata.py`: loads all-cell object, infers sample/group/condition fields, exports metadata.
