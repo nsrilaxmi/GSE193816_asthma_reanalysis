@@ -14,6 +14,37 @@ Main hypothesis tested:
 
 Published findings are treated as hypotheses to reproduce and evaluate, not as assumed results.
 
+## Study Design
+
+This is a challenge-response single-cell reanalysis, not a simple asthma-versus-healthy comparison. The expected sample labels encode:
+
+- `AA`: allergic asthma
+- `ANA`: allergic non-asthmatic control
+- `Pre`: baseline/pre-challenge
+- `Dil`: diluent/saline challenge
+- `Ag`: allergen challenge
+
+Primary contrasts are interpreted at the donor/sample level whenever possible:
+
+- `AA_Ag` vs `AA_Pre`: allergen response in asthmatics
+- `ANA_Ag` vs `ANA_Pre`: allergen response in allergic non-asthmatic controls
+- `AA_Ag` vs `ANA_Ag`: asthma-associated post-allergen state
+- `AA_Pre` vs `ANA_Pre`: baseline asthma-associated state
+- `(AA_Ag - AA_Pre) - (ANA_Ag - ANA_Pre)`: asthma-specific allergen response, when the available sample structure supports it
+
+The scripts infer `subject`, `group`, and `condition` from sample metadata and write a clean sample-level table before downstream analysis.
+
+## What This Reanalysis Adds
+
+The original study authors provide public resources and code. This repository is not intended to copy their full workflow. It is a compact, independent reanalysis designed for reproducibility and portfolio review:
+
+- starts from GEO-provided processed `.h5ad` files rather than unpublished local intermediates
+- creates explicit sample metadata and sample-level composition summaries
+- separates all-cell overview, epithelial, T-cell, MNP, and pseudo-bulk steps into readable scripts
+- uses curated biological signatures to test epithelial remodeling and immune-state hypotheses
+- exports pseudo-bulk matrices so differential expression can be modeled with donor/sample-aware designs
+- documents limitations and avoids treating cells from the same donor as independent biological replicates
+
 ## Repository Status
 
 This repository is intentionally safe for public GitHub upload:
@@ -63,6 +94,20 @@ GSE193816_mnp_data.h5ad
 GSE193816_all_data_raw_counts.h5ad
 GSE193816_all_data_log_adjusted_counts.h5ad
 ```
+
+## QC and Annotation Strategy
+
+This first version uses the curated cell annotations and embeddings distributed with the processed GEO objects. It does not recluster the entire dataset from raw FASTQs because raw sequencing files are not available from GEO for this series.
+
+The workflow therefore emphasizes:
+
+- metadata validation and sample-level summaries
+- inspection of available `.obs`, `.var`, and `.obsm` fields
+- cell count and composition summaries by sample
+- lineage-specific analysis using the authors' processed AEC, T-cell, and MNP objects
+- pseudo-bulk aggregation by `sample x cell_type` for donor-aware downstream testing
+
+If raw count-level reprocessing is needed, `GSE193816_all_data_raw_counts.h5ad` is used for pseudo-bulk export where available. Any additional filtering thresholds should be reported in the final rendered report before biological interpretation.
 
 ## Installation
 
@@ -149,6 +194,16 @@ Generated outputs are ignored by Git so the repository stays small. For a portfo
 - `05_mnp_analysis.py`: DC2, CCR2 monocyte, macrophage repair, and inflammatory MNP summaries.
 - `06_pseudobulk_export.py`: exports sample-by-cell-type pseudo-bulk count matrices.
 - `06_pseudobulk_de.R`: DESeq2 template for patient-aware contrasts where replicate structure allows.
+
+## Statistical Interpretation
+
+Single-cell measurements from the same donor are not independent biological replicates. For that reason:
+
+- composition is summarized at the sample level
+- signature scores are averaged to sample-level summaries before group-level interpretation
+- differential expression is prepared as pseudo-bulk `sample x cell_type` count matrices
+- paired formulas such as `~ subject + condition` are preferred when repeated measures exist
+- interaction-style contrasts are treated cautiously because the cohort is small and some sample-condition combinations are missing
 
 ## Limitations
 
