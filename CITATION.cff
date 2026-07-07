@@ -3,8 +3,8 @@ title: "Reproducible GEO Reanalysis of Allergen-Induced Airway Remodeling in Ast
 message: "If you use this reanalysis workflow, please cite this repository and the original GSE193816 study resources."
 type: software
 authors:
-  - family-names: "Repository author"
-    given-names: "Add your name"
+  - family-names: "Nerella"
+    given-names: "Srilaxmi"
 repository-code: "https://github.com/nsrilaxmi/GSE193816_asthma_reanalysis"
 date-released: "2026-07-07"
 keywords:
