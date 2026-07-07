@@ -1,0 +1,25 @@
+name: gse193816
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.10
+  - scanpy
+  - anndata
+  - pandas
+  - numpy
+  - matplotlib
+  - seaborn
+  - scipy
+  - statsmodels
+  - gseapy
+  - pyyaml
+  - pip
+  - r-base
+  - bioconductor-deseq2
+  - r-tidyverse
+  - r-pheatmap
+  - pip:
+      - decoupler
+      - adjustText
+

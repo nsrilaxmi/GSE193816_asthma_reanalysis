@@ -1,0 +1,122 @@
+---
+title: "GSE193816 Asthma Reanalysis"
+subtitle: "Allergen-induced airway remodeling in allergic asthma"
+format:
+  html:
+    toc: true
+    code-fold: true
+    theme: cosmo
+execute:
+  warning: false
+  message: false
+---
+
+```{python}
+from pathlib import Path
+import pandas as pd
+from IPython.display import Markdown, display
+
+project = Path("..").resolve()
+tables = project / "results" / "tables"
+figures = project / "results" / "figures"
+
+def show_png(name, caption):
+    path = figures / name
+    if path.exists():
+        display(Markdown(f"![{caption}]({path.as_posix()})"))
+    else:
+        display(Markdown(f"*Missing figure: `{name}`. Run the analysis scripts to generate it.*"))
+```
+
+## Background
+
+This project reanalyzes `GSE193816`, a human airway single-cell RNA-seq dataset from allergic asthmatics and allergic non-asthmatic controls sampled before and after allergen challenge. The primary question is whether allergen exposure induces asthma-specific epithelial remodeling, type-2 inflammatory T-cell programs, and mononuclear phagocyte shifts.
+
+## Dataset Overview
+
+```{python}
+sample_path = tables / "cell_counts_by_sample.csv"
+if sample_path.exists():
+    sample_counts = pd.read_csv(sample_path)
+    display(sample_counts)
+else:
+    display(Markdown("*Run `python scripts/02_all_cells_overview.py` to populate sample counts.*"))
+```
+
+```{python}
+show_png("all_cells_umap_group.png", "All cells colored by group")
+show_png("all_cells_umap_condition.png", "All cells colored by condition")
+show_png("all_cells_umap_cell_type_clean.png", "All cells colored by curated cell type")
+```
+
+## Cell Composition
+
+Composition summaries are calculated at the sample level so each donor/sample is the unit of interpretation.
+
+```{python}
+show_png("cell_counts_by_sample.png", "Cell counts per sample")
+show_png("celltype_composition_stacked_bar.png", "Cell type composition by sample")
+```
+
+## Airway Epithelial Remodeling
+
+The first-pass epithelial analysis scores curated gene sets representing mucus metaplasia, type-2/IL-13 response, matrix remodeling, glycolysis, antioxidant response, and injury repair.
+
+```{python}
+score_path = tables / "aec_signature_scores_by_sample.csv"
+if score_path.exists():
+    display(pd.read_csv(score_path))
+else:
+    display(Markdown("*Run `python scripts/03_epithelial_signature_analysis.py` to populate epithelial signature scores.*"))
+```
+
+```{python}
+show_png("aec_umap_group.png", "Airway epithelial cells colored by group")
+show_png("aec_umap_condition.png", "Airway epithelial cells colored by condition")
+show_png("aec_signature_scores_by_condition.png", "Epithelial signature scores by condition and group")
+show_png("aec_umap_marker_genes.png", "Epithelial remodeling marker genes")
+```
+
+## T-Cell Programs
+
+T-cell analysis focuses on TH2 and IL9-associated inflammatory programs. This section is intentionally secondary to the epithelial story in the first version.
+
+```{python}
+show_png("tcell_umap_group.png", "T cells colored by group")
+show_png("tcell_umap_th2_genes.png", "TH2 marker genes in T cells")
+show_png("tcell_signature_scores_by_condition.png", "T-cell signature scores by condition and group")
+```
+
+## Mononuclear Phagocyte States
+
+MNP analysis scores DC2/CD1C, CCR2 monocyte, repair-like macrophage, and inflammatory programs.
+
+```{python}
+show_png("mnp_umap_group.png", "MNP cells colored by group")
+show_png("mnp_umap_marker_genes.png", "MNP marker genes")
+show_png("mnp_signature_scores_by_condition.png", "MNP signature scores by condition and group")
+```
+
+## Pseudo-Bulk Differential Expression
+
+Pseudo-bulk counts are aggregated by `sample x cell_type` to avoid treating cells from the same sample as independent biological replicates. The R template uses paired subject models when repeated measures are available.
+
+```{python}
+pb_meta = tables / "pseudobulk_metadata_sample_by_celltype.csv"
+if pb_meta.exists():
+    display(pd.read_csv(pb_meta).head(20))
+else:
+    display(Markdown("*Run `python scripts/06_pseudobulk_export.py` to create pseudo-bulk inputs.*"))
+```
+
+## Limitations
+
+The cohort is small, with missing condition/sample combinations. Composition and signature score results should be interpreted as exploratory. Pseudo-bulk contrasts should be reviewed for the number of biological replicates contributing to each cell type before making strong claims.
+
+## Reproducibility
+
+```{python}
+import sys, scanpy as sc
+display(Markdown(f"Python: `{sys.version.split()[0]}`  \nScanpy: `{sc.__version__}`"))
+```
+

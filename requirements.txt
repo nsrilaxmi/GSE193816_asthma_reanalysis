@@ -1,0 +1,13 @@
+scanpy
+anndata
+pandas
+numpy
+matplotlib
+seaborn
+scipy
+statsmodels
+gseapy
+decoupler
+adjustText
+pyyaml
+

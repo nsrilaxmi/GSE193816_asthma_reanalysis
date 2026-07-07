@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "Reproducible GEO Reanalysis of Allergen-Induced Airway Remodeling in Asthma"
+message: "If you use this reanalysis workflow, please cite this repository and the original GSE193816 study resources."
+type: software
+authors:
+  - family-names: "Repository author"
+    given-names: "Add your name"
+repository-code: "https://github.com/YOUR_USERNAME/GSE193816_asthma_reanalysis"
+date-released: "2026-07-07"
+keywords:
+  - single-cell RNA-seq
+  - asthma
+  - GEO
+  - Scanpy
+  - pseudo-bulk
+references:
+  - type: dataset
+    title: "GSE193816"
+    url: "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE193816"
+  - type: software
+    title: "Villani Lab airway allergic asthma resources"
+    url: "https://github.com/villani-lab/airway_allergic_asthma"
+

@@ -1,0 +1,15 @@
+accession: GSE193816
+geo_base_url: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE193nnn/GSE193816/suppl
+files:
+  all_cells: GSE193816_all_cells_data.h5ad
+  aec: GSE193816_AEC_data.h5ad
+  tcell: GSE193816_t_cell_data.h5ad
+  mnp: GSE193816_mnp_data.h5ad
+  raw_counts: GSE193816_all_data_raw_counts.h5ad
+  log_adjusted_counts: GSE193816_all_data_log_adjusted_counts.h5ad
+metadata:
+  preferred_sample_columns: [sample, Sample, sample_id, Sample_ID, orig.ident, batch, library, donor_condition]
+  preferred_celltype_columns: [cell_type, celltype, CellType, cell_type_broad, annotation, cluster, leiden]
+  preferred_group_columns: [group, Group, disease, asthma_status, phenotype]
+  preferred_condition_columns: [condition, Condition, challenge, timepoint, treatment]
+
