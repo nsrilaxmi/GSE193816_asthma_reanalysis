@@ -154,6 +154,12 @@ Generated outputs are ignored by Git so the repository stays small. For a portfo
 
 The cohort is small and GEO lists 21 samples, so not every subject has every condition. Composition and signature results should be interpreted as exploratory. Pseudo-bulk contrasts should be checked for sufficient biological replication before strong biological claims are made.
 
+## Author
+
+**Srilaxmi Nerella**  
+UCSF profile: [profiles.ucsf.edu/srilaxmi.nerella](https://profiles.ucsf.edu/srilaxmi.nerella)  
+Google Scholar: [scholar.google.com/citations?user=wjN338cAAAAJ](https://scholar.google.com/citations?user=wjN338cAAAAJ&hl=en)
+
 ## References
 
 - GEO accession: [GSE193816](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE193816)
