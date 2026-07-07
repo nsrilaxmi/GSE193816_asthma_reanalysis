@@ -5,7 +5,7 @@ type: software
 authors:
   - family-names: "Repository author"
     given-names: "Add your name"
-repository-code: "https://github.com/YOUR_USERNAME/GSE193816_asthma_reanalysis"
+repository-code: "https://github.com/nsrilaxmi/GSE193816_asthma_reanalysis"
 date-released: "2026-07-07"
 keywords:
   - single-cell RNA-seq
@@ -20,4 +20,3 @@ references:
   - type: software
     title: "Villani Lab airway allergic asthma resources"
     url: "https://github.com/villani-lab/airway_allergic_asthma"
-
