@@ -133,6 +133,14 @@ python scripts/00_download_geo.py
 bash scripts/run_all.sh
 ```
 
+Optional Snakemake execution:
+
+```bash
+snakemake --snakefile workflow/Snakefile --cores 4
+```
+
+See [workflow/README.md](workflow/README.md) for details. The Snakemake workflow covers the Python analysis steps; optional R/DESeq2 and Quarto report rendering remain available through `scripts/run_all.sh`.
+
 Or run each step manually:
 
 ```bash

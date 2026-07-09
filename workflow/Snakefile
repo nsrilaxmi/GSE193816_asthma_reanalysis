@@ -1,0 +1,97 @@
+PYTHON = config.get("python", "python3")
+
+
+rule all:
+    input:
+        "data/metadata/sample_metadata_clean.csv",
+        "results/tables/cell_counts_by_sample.csv",
+        "results/tables/celltype_composition_by_sample.csv",
+        "results/tables/aec_signature_scores_by_sample.csv",
+        "results/tables/tcell_signature_scores_by_sample.csv",
+        "results/tables/mnp_signature_scores_by_sample.csv",
+        "results/tables/pseudobulk_metadata_sample_by_celltype.csv",
+        "results/figures/all_cells_umap_group.png",
+        "results/figures/all_cells_umap_condition.png",
+        "results/figures/celltype_composition_stacked_bar.png",
+        "results/figures/aec_signature_scores_by_condition.png",
+        "results/figures/tcell_signature_scores_by_condition.png",
+        "results/figures/mnp_signature_scores_by_condition.png",
+
+
+rule download_geo:
+    output:
+        "data/raw_geo/GSE193816_all_cells_data.h5ad",
+        "data/raw_geo/GSE193816_AEC_data.h5ad",
+        "data/raw_geo/GSE193816_t_cell_data.h5ad",
+        "data/raw_geo/GSE193816_mnp_data.h5ad",
+        "data/raw_geo/GSE193816_all_data_raw_counts.h5ad",
+        "data/raw_geo/GSE193816_all_data_log_adjusted_counts.h5ad",
+    shell:
+        "{PYTHON} scripts/00_download_geo.py"
+
+
+rule metadata:
+    input:
+        "data/raw_geo/GSE193816_all_cells_data.h5ad",
+    output:
+        "data/metadata/sample_metadata_clean.csv",
+    shell:
+        "{PYTHON} scripts/01_download_and_metadata.py"
+
+
+rule all_cells_overview:
+    input:
+        "data/raw_geo/GSE193816_all_cells_data.h5ad",
+        "data/metadata/sample_metadata_clean.csv",
+    output:
+        "results/tables/cell_counts_by_sample.csv",
+        "results/tables/celltype_composition_by_sample.csv",
+        "results/figures/all_cells_umap_group.png",
+        "results/figures/all_cells_umap_condition.png",
+        "results/figures/celltype_composition_stacked_bar.png",
+    shell:
+        "{PYTHON} scripts/02_all_cells_overview.py"
+
+
+rule epithelial_analysis:
+    input:
+        "data/raw_geo/GSE193816_AEC_data.h5ad",
+        "data/metadata/sample_metadata_clean.csv",
+    output:
+        "results/tables/aec_signature_scores_by_sample.csv",
+        "results/figures/aec_signature_scores_by_condition.png",
+    shell:
+        "{PYTHON} scripts/03_epithelial_signature_analysis.py"
+
+
+rule tcell_analysis:
+    input:
+        "data/raw_geo/GSE193816_t_cell_data.h5ad",
+        "data/metadata/sample_metadata_clean.csv",
+    output:
+        "results/tables/tcell_signature_scores_by_sample.csv",
+        "results/figures/tcell_signature_scores_by_condition.png",
+    shell:
+        "{PYTHON} scripts/04_tcell_analysis.py"
+
+
+rule mnp_analysis:
+    input:
+        "data/raw_geo/GSE193816_mnp_data.h5ad",
+        "data/metadata/sample_metadata_clean.csv",
+    output:
+        "results/tables/mnp_signature_scores_by_sample.csv",
+        "results/figures/mnp_signature_scores_by_condition.png",
+    shell:
+        "{PYTHON} scripts/05_mnp_analysis.py"
+
+
+rule pseudobulk_export:
+    input:
+        "data/raw_geo/GSE193816_all_data_raw_counts.h5ad",
+        "data/metadata/sample_metadata_clean.csv",
+    output:
+        "results/tables/pseudobulk_counts_sample_by_celltype.csv",
+        "results/tables/pseudobulk_metadata_sample_by_celltype.csv",
+    shell:
+        "{PYTHON} scripts/06_pseudobulk_export.py"

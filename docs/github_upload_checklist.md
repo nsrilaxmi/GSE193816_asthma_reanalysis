@@ -4,8 +4,8 @@ Before pushing:
 
 ```bash
 git status --short
-git add .
-git commit -m "Initial GSE193816 asthma reanalysis workflow"
+git add .github CITATION.cff README.md data docs environment.yml notebooks reports requirements.txt results scripts workflow
+git commit -m "Add Snakemake workflow for GSE193816 asthma reanalysis"
 ```
 
 Create a new empty GitHub repository, then:
@@ -18,8 +18,7 @@ git push -u origin main
 
 After pushing:
 
-- Replace `YOUR_USERNAME` in `CITATION.cff`.
-- Replace `Add your name` in `CITATION.cff`.
-- Add selected final figures to `docs/figures/` only after reviewing them.
+- Confirm GitHub Actions completes successfully.
+- Confirm README figures render correctly on GitHub.
+- Confirm the optional Snakemake instructions in `workflow/README.md` are visible.
 - Keep large `.h5ad` files and generated result tables out of Git unless there is a specific release reason.
-
