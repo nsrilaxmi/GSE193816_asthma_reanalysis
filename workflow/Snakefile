@@ -10,12 +10,14 @@ rule all:
         "results/tables/tcell_signature_scores_by_sample.csv",
         "results/tables/mnp_signature_scores_by_sample.csv",
         "results/tables/pseudobulk_metadata_sample_by_celltype.csv",
+        "results/tables/pathway_enrichment_results.csv",
         "results/figures/all_cells_umap_group.png",
         "results/figures/all_cells_umap_condition.png",
         "results/figures/celltype_composition_stacked_bar.png",
         "results/figures/aec_signature_scores_by_condition.png",
         "results/figures/tcell_signature_scores_by_condition.png",
         "results/figures/mnp_signature_scores_by_condition.png",
+        "results/figures/pathway_enrichment_dotplot.png",
 
 
 rule download_geo:
@@ -95,3 +97,20 @@ rule pseudobulk_export:
         "results/tables/pseudobulk_metadata_sample_by_celltype.csv",
     shell:
         "{PYTHON} scripts/06_pseudobulk_export.py"
+
+
+rule pathway_enrichment:
+    input:
+        "docs/tables/pseudobulk_AEC_AA_Ag_vs_Pre_top50.csv",
+        "docs/tables/pseudobulk_AEC_ANA_Ag_vs_Pre_top50.csv",
+        "docs/tables/pseudobulk_Tcell_AA_Ag_vs_Pre_top50.csv",
+        "docs/tables/pseudobulk_MNP_AA_Ag_vs_Pre_top50.csv",
+        "scripts/07_pathway_enrichment.py",
+    output:
+        "results/tables/pathway_enrichment_results.csv",
+        "results/figures/pathway_enrichment_dotplot.png",
+        "docs/tables/pathway_enrichment_results.csv",
+        "docs/figures/pathway_enrichment_dotplot.png",
+        "docs/pathway_enrichment_summary.md",
+    shell:
+        "{PYTHON} scripts/07_pathway_enrichment.py"

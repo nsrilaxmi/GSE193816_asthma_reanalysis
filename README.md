@@ -141,6 +141,19 @@ snakemake --snakefile workflow/Snakefile --cores 4
 
 See [workflow/README.md](workflow/README.md) for details. The Snakemake workflow covers the Python analysis steps; optional R/DESeq2 and Quarto report rendering remain available through `scripts/run_all.sh`.
 
+## Workflow Overview
+
+```text
+GEO processed h5ad files
+  -> sample metadata curation
+  -> all-cell composition overview
+  -> epithelial, T-cell, and MNP signature summaries
+  -> pseudo-bulk sample-by-cell-type count export
+  -> optional DESeq2 pseudo-bulk contrasts
+  -> curated pathway/module overlap enrichment
+  -> selected GitHub preview figures and tables
+```
+
 Or run each step manually:
 
 ```bash
@@ -150,6 +163,7 @@ python scripts/03_epithelial_signature_analysis.py
 python scripts/04_tcell_analysis.py
 python scripts/05_mnp_analysis.py
 python scripts/06_pseudobulk_export.py
+python scripts/07_pathway_enrichment.py
 ```
 
 If R/DESeq2 is available:
@@ -181,13 +195,15 @@ results/tables/
 ├── tcell_signature_scores_by_sample.csv
 ├── mnp_signature_scores_by_sample.csv
 ├── pseudobulk_counts_sample_by_celltype.csv
-└── pseudobulk_metadata_sample_by_celltype.csv
+├── pseudobulk_metadata_sample_by_celltype.csv
+└── pathway_enrichment_results.csv
 
 results/figures/
 ├── all_cells_umap_group.png
 ├── all_cells_umap_condition.png
 ├── celltype_composition_stacked_bar.png
 ├── aec_signature_scores_by_condition.png
+├── pathway_enrichment_dotplot.png
 └── additional lineage-specific UMAP/signature plots
 ```
 
@@ -215,9 +231,15 @@ Selected outputs from a local run are included in `docs/` so the GitHub reposito
 
 ![MNP signature scores by condition](docs/figures/mnp_signature_scores_by_condition.png)
 
-Preview tables are available in `docs/tables/`, including sample metadata, sample-level cell counts, epithelial signature scores, pseudo-bulk metadata, and compact top-50 pseudo-bulk differential expression summaries.
+### Pathway/Module Enrichment
 
-See [validation_against_original.md](docs/validation_against_original.md) for a short audit of which first-pass results are directionally consistent with the original study and which claims require deeper subtype-resolved analysis.
+The pathway layer tests whether compact pseudo-bulk top-gene tables overlap curated airway, epithelial, T-cell, and myeloid modules. These are exploratory overlap statistics, not full genome-wide GSEA results.
+
+![Pathway enrichment dot plot](docs/figures/pathway_enrichment_dotplot.png)
+
+Preview tables are available in `docs/tables/`, including sample metadata, sample-level cell counts, epithelial signature scores, pseudo-bulk metadata, compact top-50 pseudo-bulk differential expression summaries, and pathway-overlap enrichment results.
+
+See [pathway_enrichment_summary.md](docs/pathway_enrichment_summary.md) for a compact interpretation note and [validation_against_original.md](docs/validation_against_original.md) for a short audit of which first-pass results are directionally consistent with the original study and which claims require deeper subtype-resolved analysis.
 
 ## Analysis Modules
 
@@ -228,6 +250,7 @@ See [validation_against_original.md](docs/validation_against_original.md) for a 
 - `05_mnp_analysis.py`: DC2, CCR2 monocyte, macrophage repair, and inflammatory MNP summaries.
 - `06_pseudobulk_export.py`: exports sample-by-cell-type pseudo-bulk count matrices.
 - `06_pseudobulk_de.R`: DESeq2 template for patient-aware contrasts where replicate structure allows.
+- `07_pathway_enrichment.py`: curated pathway/module overlap analysis from committed pseudo-bulk top-gene tables.
 
 ## Statistical Interpretation
 

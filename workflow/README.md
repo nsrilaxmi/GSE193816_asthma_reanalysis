@@ -24,7 +24,7 @@ From the repository root:
 snakemake --snakefile workflow/Snakefile --cores 4
 ```
 
-This target downloads the processed GEO `.h5ad` files if needed, creates cleaned metadata, runs all-cell overview, epithelial, T-cell, MNP, and pseudo-bulk export steps.
+This target downloads the processed GEO `.h5ad` files if needed, creates cleaned metadata, runs all-cell overview, epithelial, T-cell, MNP, pseudo-bulk export, and pathway-overlap enrichment steps.
 
 ## Dry Run
 

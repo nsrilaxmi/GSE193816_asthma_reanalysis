@@ -30,6 +30,8 @@ else
   echo "Rscript not found; skipping DESeq2 pseudo-bulk differential expression."
 fi
 
+"$PYTHON_BIN" scripts/07_pathway_enrichment.py
+
 if command -v quarto >/dev/null 2>&1; then
   quarto render reports/08_final_report.qmd --output-dir ../results/reports
 else
